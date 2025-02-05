@@ -1,0 +1,5 @@
+# Ignore folders 
+dist
+build
+node_modules
+.vscode

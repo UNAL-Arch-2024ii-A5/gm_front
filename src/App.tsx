@@ -1,35 +1,19 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { useUserStore } from './stores/user-sesion'
+import { PrivateRouter } from './routers/private-routes'
+import { PublicRouter } from './routers/public-routes'
 
-function App() {
-  const [count, setCount] = useState(0)
+import { Navigate, useLocation } from 'react-router-dom'
+import { PUBLIC_ROUTES } from 'routers/routes'
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+const App = () => {
+  const { user } = useUserStore()
+  const location = useLocation()
+
+  if (!user && location.pathname !== PUBLIC_ROUTES.LOGIN)
+    return <Navigate to={PUBLIC_ROUTES.LOGIN} replace={true} />
+
+  return <div className='h-full w-full'>{user ? <PrivateRouter /> : <PublicRouter />}</div>
 }
 
 export default App

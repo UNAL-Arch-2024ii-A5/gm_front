@@ -20,7 +20,18 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    /* Paths */
+    "paths": {
+      "views/*": ["./src/views/*"],
+      "services/*": ["./src/services/*"],
+      "routers/*": ["./src/routers/*"],
+      "assets/*": ["./src/assets/*"],
+      "stores/*": ["./src/stores/*"],
+      "components/*": ["./src/components/*"],
+      "hooks/*": ["./src/hooks/*"]
+    }
   },
   "include": ["src"]
 }

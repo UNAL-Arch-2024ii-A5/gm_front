@@ -1,4 +1,3 @@
-
 import GymLogo from 'assets/gym-logo.png'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
@@ -19,16 +18,15 @@ export const Login = () => {
     /**
      * Diana: Acá vas a recibir el user y el password en el formValues.
      * La idea es dispara el flujo de login desde acá y guardar la sesión del
-     * usuario en store usando la functión update user:
+     * usuario en store usando la función updateUser:
      */
 
     // const laSesionDeUsuario = laFuncionQueHaceElLogin()
     // updateUser(laSesionDeUsuario)
 
-
     // por lo pronto con que metan cualquier valor la cosa rueda.
     console.log(formValues)
-    updateUser({email: formValues.email})
+    updateUser({ email: formValues.email })
     navigate(PRIVATE_LINK_ROUTES.HOME)
   }
 
@@ -63,12 +61,12 @@ export const Login = () => {
               {...register('password', { required: true })}
             />
           </label>
-          <button className='h-6 border-1 rounded-lg mt-3 w-1/2 self-center text-sm' >Iniciar sesion</button>
-          <Link to="" className="text-xs text-center">
+          <button className='h-6 border-1 rounded-lg mt-3 w-1/2 self-center text-sm' >Iniciar sesión</button>
+          <Link to="/forgot-password" className="text-xs text-center">
             Recuperar contraseña
           </Link>
-          <Link to="" className="text-s text-center">
-            ¿No estas registrado?, crea una cuenta
+          <Link to="/register" className="text-s text-center">
+            ¿No estás registrado? Crea una cuenta
           </Link>
         </form>
       </div>

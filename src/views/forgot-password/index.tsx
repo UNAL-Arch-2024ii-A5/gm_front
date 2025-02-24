@@ -16,8 +16,7 @@ export const ForgotPassword = () => {
 
   return (
     <div className="flex h-full w-full items-center justify-center bg-gray-100">
-      <div className="min-w-96 rounded-lg px-10 py-6 shadow-md bg-white">
-        {/* Logo y título */}
+      <div className="min-w-96 rounded-lg px-10 py-6 shadow-md">
         <div className="mb-8 flex h-16 items-center justify-center gap-4">
           <img src={GymLogo} className="h-full w-auto" alt="GymMaster Logo" />
           <span className="text-2xl">GymMaster</span>

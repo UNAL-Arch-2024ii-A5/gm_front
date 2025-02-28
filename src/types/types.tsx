@@ -1,16 +1,26 @@
+// src/types/types.ts
+export interface Muscle {
+  muscleID: string;
+  muscleName: string;
+}
+
 export interface Exercise {
-  exercise_name: string;
-  exercise_image: string;
-  exercise_time: string;
-  exercise_sets: number;
-  exercise_reps: number;
-  muscle_group: string[];
+  id: string;
+  exerciseName: string;
+  exerciseImage: string;
+  exerciseTime: number;
+  exerciseSets: number;
+  exerciseReps: number;
+  muscularGroup: Muscle[];
 }
 
 export interface Routine {
+  id: string;
+  routineName: string;
   imageUrl: string;
-  name: string;
   owner: string;
+  routineDifficulty: number;
+  routineMuscles: Muscle[];
   exercises: Exercise[];
-  muscleGroups: string[];
+  routineExercises?: string[]; // This appears in the response but might not be needed in UI
 }

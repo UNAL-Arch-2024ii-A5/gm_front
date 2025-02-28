@@ -5,30 +5,28 @@ import { Routine } from "../../types/types";
 
 const RoutineCard: React.FC<{ routine: Routine }> = ({ routine }) => {
   const navigate = useNavigate();
-
+  
   const handleStart = () => {
-    console.log(`Iniciando rutina: ${routine.name}`);
-    // Navigate to the exercise guide page with the routine data
-    navigate(`/exercise-guide/${encodeURIComponent(routine.name)}`, { 
-      state: { routine } 
-    });
+    console.log(`Iniciando rutina: ${routine.routineName}`);
+    // Navigate to the exercise guide page with the routine ID
+    navigate(`/exercise-guide/${routine.id}`, { state: { routine } });
   };
-
-  // Extract all muscle groups from exercises for display
-  const allMuscleGroups = routine.exercises
-    .flatMap(ex => ex.muscle_group)
-    .filter((value, index, self) => self.indexOf(value) === index)
+  
+  // Get all muscle names for display
+  const allMuscleGroups = routine.routineMuscles
+    .map(muscle => muscle.muscleName)
     .join(", ");
-
+  
   return (
     <div className="border rounded-lg shadow-md p-4 flex flex-col items-center">
-      <img src={routine.imageUrl} alt={routine.name} className="w-full h-40 object-cover rounded-md" />
-      <h2 className="text-lg font-bold mt-2">{routine.name}</h2>
+      <img src={routine.imageUrl} alt={routine.routineName} className="w-full h-40 object-cover rounded-md" />
+      <h2 className="text-lg font-bold mt-2">{routine.routineName}</h2>
       <p className="text-gray-600">Owner: {routine.owner}</p>
+      <p className="text-gray-600">Difficulty: {routine.routineDifficulty}/5</p>
       <p className="text-sm text-gray-500">Muscle Groups: {allMuscleGroups}</p>
       <ul className="mt-2">
-        {routine.exercises.map((exercise, index) => (
-          <li key={index} className="text-sm text-gray-700">• {exercise.exercise_name}</li>
+        {routine.exercises.map((exercise) => (
+          <li key={exercise.id} className="text-sm text-gray-700">• {exercise.exerciseName}</li>
         ))}
       </ul>
       <button

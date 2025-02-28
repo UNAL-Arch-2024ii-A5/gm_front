@@ -12,7 +12,7 @@ export const PrivateRouter = () => {
         <Route path={PRIVATE_ROUTES.MONITORING} element={<Monitoring />} />
         <Route path={PRIVATE_ROUTES.PROGRESS} element={<Progress />} />
         <Route path={PRIVATE_ROUTES.ROUTINES} element={<Routines />} />
-        <Route path="/exercise-guide/:name" element={<ExerciseGuide />} />
+        <Route path="/exercise-guide/:routineId" element={<ExerciseGuide />} />
       </Route>
     </Routes>
   )

@@ -18,23 +18,18 @@ const GET_ALL_MACHINES = gql`
 
 // Mutations
 const CREATE_MACHINE = gql`
-  mutation Mutation($name: String!, $description: String, $state: String, $type: String, $serviceInterval: Int) {
-    createMachineMS(name: $name, description: $description, state: $state, type: $type, serviceInterval: $serviceInterval) {
-      name
-      state
-      type
-      lastService
-      serviceInterval
+  mutation Mutation($name: String!, $description: String, $state: String, $type: String, $lastService: String, $serviceInterval: Int) {
+    createMachineMS(name: $name, description: $description, state: $state, type: $type, lastService: $lastService, serviceInterval: $serviceInterval) {
+      id
     }
   }
 `;
 const DELETE_MACHINE = gql`
-  mutation DeleteMachine($id: ID!) {
-    deleteMachine(id: $id) {
-      message
-      statusCode
-    }
+  mutation DeleteMachine($deleteMachineId: ID!) {
+  deleteMachine(id: $deleteMachineId) {
+    message
   }
+}
 `;
 
 // Form Types
@@ -80,6 +75,7 @@ export const Machines = () => {
           <thead>
             <tr className="bg-gray-200">
               <th className="border px-4 py-2">Nombre</th>
+              <th className="border px-4 py-2">Id</th>
               <th className="border px-4 py-2">estado</th>
               <th className="border px-4 py-2">tipo</th>
               <th className="border px-4 py-2">Ultimo mantenimiento</th>
@@ -90,6 +86,7 @@ export const Machines = () => {
           <tbody>
             {data.getAllMachines.map((machine: any) => (
               <tr key={machine.id} className="border">
+                <td className="border px-4 py-2">{machine.id}</td>
                 <td className="border px-4 py-2">{machine.name}</td>
                 <td className="border px-4 py-2">{machine.state}</td>
                 <td className="border px-4 py-2">{machine.type}</td>

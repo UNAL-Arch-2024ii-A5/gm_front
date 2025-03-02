@@ -19,50 +19,59 @@ const GET_ALL_MACHINES = gql`
 // Mutations
 const CREATE_MACHINE = gql`
   mutation Mutation($name: String!, $description: String, $state: String, $type: String, $serviceInterval: Int) {
-    createMachineMS(name: $name, description: $description, state: $state, type: $type, serviceInterval: $serviceInterval) {
-      name
-      state
-      type
-      lastService
-      serviceInterval
-    }
+  createMachineMS(name: $name, description: $description, state: $state, type: $type, serviceInterval: $serviceInterval) {
+    id
   }
+}
 `;
 const DELETE_MACHINE = gql`
-  mutation DeleteMachine($id: ID!) {
-    deleteMachine(id: $id) {
-      message
-      statusCode
-    }
+  mutation DeleteMachine($deleteMachineId: ID!) {
+  deleteMachine(id: $deleteMachineId) {
+    message
   }
+}
 `;
 
 // Form Types
 type MachineForm = {
   name: string;
-  description?: string;
-  state?: string;
+  description: string;
+  state: string;
   type: string;
-  lastService?: string;
-  serviceInterval?: number;
+  lastService: string;
+  serviceInterval: string;
 };
 
 export const Machines = () => {
   const { data, loading, error, refetch } = useQuery(GET_ALL_MACHINES);
-  const [createMachine] = useMutation(CREATE_MACHINE);
+  const [createMachine, { data: mutationEvent, loading: loadingMutation, error: errorMutation }] = useMutation(CREATE_MACHINE);
   const [deleteMachine] = useMutation(DELETE_MACHINE);
+
+
   const { register, handleSubmit, reset } = useForm<MachineForm>();
 
   // Handle Machine Creation
   const onSubmit = async (formState: MachineForm) => {
-    await createMachine({ variables: { input: formState } });
+    console.log(formState);
+    const result = await createMachine({ variables: { 
+      name:formState.name,
+      description:formState.description,
+      state:formState.state,
+      type:formState.type,
+      serviceInterval:parseInt(formState.serviceInterval)
+    } });
+    console.log(result);
     refetch();
     reset();
   };
 
   // Handle Machine Deletion
   const handleDelete = async (id: string) => {
-    await deleteMachine({ variables: { id } });
+    console.log(id)
+    if (window.confirm("¿Estás seguro de que quieres eliminar esta máquina?")) {
+      const result =await deleteMachine({ variables: { deleteMachineId:id } });
+      console.log(result)
+    }
     refetch();
   };
 
@@ -73,13 +82,14 @@ export const Machines = () => {
       {/* Loading/Error States */}
       {loading && <p>Cargando...</p>}
       {error && <p>Error al obtener datos: {error.message}</p>}
-      
+      <button onClick={refetch}>Re cargar eventos</button>
       {/* Machines List */}
       {data && (
         <table className="w-full border-collapse border border-gray-300 mt-2">
           <thead>
             <tr className="bg-gray-200">
               <th className="border px-4 py-2">Nombre</th>
+              <th className="border px-4 py-2">Id</th>
               <th className="border px-4 py-2">estado</th>
               <th className="border px-4 py-2">tipo</th>
               <th className="border px-4 py-2">Ultimo mantenimiento</th>
@@ -90,6 +100,7 @@ export const Machines = () => {
           <tbody>
             {data.getAllMachines.map((machine: any) => (
               <tr key={machine.id} className="border">
+                <td className="border px-4 py-2">{machine.id}</td>
                 <td className="border px-4 py-2">{machine.name}</td>
                 <td className="border px-4 py-2">{machine.state}</td>
                 <td className="border px-4 py-2">{machine.type}</td>
@@ -118,7 +129,7 @@ export const Machines = () => {
           <input className="border p-2 rounded-md" placeholder="Periodicidad Mantenimientos (días)" type="number" {...register("serviceInterval")} />
           <textarea className="border p-2 col-span-2 rounded-md" placeholder="Descripción" {...register("description")} />
         </div>
-        <button type="submit" className="mt-4 bg-blue-500 text-white px-4 py-2 rounded">Create Machine</button>
+        <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded">Create Machine</button>
       </form>
     </div>
   );

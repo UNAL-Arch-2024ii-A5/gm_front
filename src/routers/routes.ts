@@ -2,6 +2,7 @@ export const PUBLIC_ROUTES = {
   LOGIN: '/login',
   REGISTER: '/register',
   FORGOT: '/forgot-password',
+  FORGOTP: '/forgot-passwordP',
   HOME: '/home',
 }
 

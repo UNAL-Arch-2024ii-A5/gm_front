@@ -1,36 +1,8 @@
-import { useQuery, gql, useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { useForm } from 'react-hook-form';
+import {CREATE_MACHINE, DELETE_MACHINE} from '../../graphql/machines/mutations'
+import {GET_ALL_MACHINES} from '../../graphql/machines/query'
 
-// Queries
-const GET_ALL_MACHINES = gql`
-  query {
-    getAllMachines {
-      id
-      name
-      description 
-      state
-      type
-      lastService
-      serviceInterval
-    }
-  }
-`;
-
-// Mutations
-const CREATE_MACHINE = gql`
-  mutation Mutation($name: String!, $description: String, $state: String, $type: String, $serviceInterval: Int) {
-  createMachineMS(name: $name, description: $description, state: $state, type: $type, serviceInterval: $serviceInterval) {
-    id
-  }
-}
-`;
-const DELETE_MACHINE = gql`
-  mutation DeleteMachine($deleteMachineId: ID!) {
-  deleteMachine(id: $deleteMachineId) {
-    message
-  }
-}
-`;
 
 // Form Types
 type MachineForm = {

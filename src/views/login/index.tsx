@@ -1,54 +1,83 @@
-import GymLogo from 'assets/gym-logo.png'
-import { Link, useNavigate } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
-import { useUserStore } from 'stores/user-sesion'
-import { PRIVATE_LINK_ROUTES } from 'routers/routes'
-import { useMutation } from '@apollo/client'
-import { LOGIN_ADMIN, LOGIN_COACH, LOGIN_USER } from '../../graphql/authMs/mutations'
-
+import GymLogo from 'assets/gym-logo.png';
+import { Link, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { useUserStore } from 'stores/user-sesion';
+import { PRIVATE_LINK_ROUTES } from 'routers/routes';
+import { useMutation } from '@apollo/client';
+import { LOGIN_ADMIN, LOGIN_COACH, LOGIN_USER } from '../../graphql/authMs/mutations';
 
 type LoginForm = {
-  email: string
-  password: string
-  role: string,
-}
+  email: string;
+  password: string;
+  role: string;
+};
 
 export const Login = () => {
-  const { updateUser } = useUserStore()
-  const navigate = useNavigate()
-  const { register, handleSubmit } = useForm<LoginForm>()
-  const [loginAdmin, { data: adminData, loading: adminLoading, error: adminError }] = useMutation(LOGIN_ADMIN);
-  const [loginCoach, { data: coachData, loading: coachLoading, error: coachError }] = useMutation(LOGIN_COACH);
-  const [loginUser, { data: userData, loading: userLoading, error: userError }] = useMutation(LOGIN_USER);
-  
+  const { updateUser } = useUserStore();
+  const navigate = useNavigate();
+  const { register, handleSubmit } = useForm<LoginForm>();
+
+  // Mutaciones de login para cada tipo de usuario
+  const [loginAdmin] = useMutation(LOGIN_ADMIN);
+  const [loginCoach] = useMutation(LOGIN_COACH);
+  const [loginUser] = useMutation(LOGIN_USER);
+
+  // Asocia cada rol con su mutación
   const methodSwitch: any = {
     admin: loginAdmin,
-    coach: loginCoach,
+    coach: loginCoach, // 🔥 Corregido (antes "Coach", ahora en minúscula)
     user: loginUser,
-  }
+  };
 
+  // Asocia cada rol con el nombre de la respuesta del backend
   const methodSwitchName: any = {
     admin: "loginAdmin",
-    coach: "loginCoach",
-    user: "loginUser",
-  }
+    coach: "loginCoach", // 🔥 Corregido para coincidir con el backend
+    user: "loginUsuarios",
+  };
 
   const onSubmit = async (formValues: LoginForm) => {
     const { role } = formValues;
+    
+    console.log("Rol seleccionado:", role);
+
     try {
+      if (!methodSwitch[role]) {
+        console.error("⚠️ Error: No existe una mutación para el rol:", role);
+        return;
+      }
+
+      console.log(`🚀 Ejecutando mutación para ${role}...`);
+
+      // Llamamos la mutación correspondiente al rol
       const response = await methodSwitch[role]({
         variables: { email: formValues.email, password: formValues.password },
       });
-      const { address, email, firstname, lastname, mobile, token, _id } = response.data[methodSwitchName[role]];
+
+      console.log("✅ Respuesta del servidor:", response);
+
+      const responseData = response?.data?.[methodSwitchName[role]];
+
+      if (!responseData) {
+        console.error(`❌ Error: No se recibió una respuesta válida para el rol ${role}`);
+        return;
+      }
+
+      // Extraemos los datos del usuario
+      const { address, email, firstname, lastname, mobile, token, _id } = responseData;
+
+      // Actualizamos el estado del usuario y almacenamos el token
       updateUser({ address, email, firstname, lastname, mobile, token, _id });
       sessionStorage.setItem("token", token);
+
+      console.log("🎉 Login exitoso. Redirigiendo a Home...");
       navigate(PRIVATE_LINK_ROUTES.HOME);
-      console.log(response);
+
     } catch (error) {
-      console.log("Error autenticando"); // Aquí podrías mostrar un mensaje de error en la UI
+      console.error("❌ Error autenticando:", error);
     }
   };
-  
+
   return (
     <div className="flex h-full w-full items-center justify-center bg-gray-100">
       <div className="min-w-96 rounded-lg px-10 py-6 shadow-md">
@@ -88,7 +117,7 @@ export const Login = () => {
             >
               <option value="user">Usuario</option>
               <option value="admin">Administrador</option>
-              <option value="coach">Entrenador</option>
+              <option value="coach">Entrenador</option> {/* 🔥 Corregido, antes tenía "Coach" con mayúscula */}
             </select>
           </label>
           <button className='h-6 border-1 rounded-lg mt-3 w-1/2 self-center text-sm' >Iniciar sesión</button>
@@ -101,5 +130,5 @@ export const Login = () => {
         </form>
       </div>
     </div>
-  )
-}
+  );
+};

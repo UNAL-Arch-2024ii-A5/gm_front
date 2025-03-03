@@ -86,4 +86,27 @@ export const REGISTER =gql`
   }
 }
 `;
+export const DELETE_USER = gql `
+    mutation DeleteUser($id: ID!) {
+    deleteUser(_id: $id) {
+      _id
+      firstname
+      lastname
+      email
+      mobile
+      password
+      role
+      isBlocked
+      address
+      refreshToken
+      routines
+      images
+      totalrating
+      passwordChangeAt
+      passwordResetToken
+      passwordResetExpires
+    }
+  }
+
+`;
 

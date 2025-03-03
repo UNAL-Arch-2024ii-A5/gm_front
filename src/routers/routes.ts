@@ -12,6 +12,7 @@ export const PRIVATE_ROUTES = {
   ROUTINES: 'rutinas',
   PROGRESS: 'progreso',
   MACHINES: 'equipo',
+  USERS:'all-users'
 }
 
 export const PRIVATE_LINK_ROUTES = {

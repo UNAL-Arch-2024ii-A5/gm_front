@@ -5,21 +5,32 @@ import { useState } from 'react';
 
 export const Users = () => {
   const { data, loading, error, refetch } = useQuery(GET_USERS);
-  const [deleteUser] = useMutation(DELETE_USER);
+  const [deleteUser, { loading: deleting }] = useMutation(DELETE_USER);
+  const [deletingUser, setDeletingUser] = useState<string | null>(null);
 
   const handleDelete = async (_id: string) => {
-    if (confirm('¿Seguro que quieres eliminar este usuario?')) {
-      try {
-        await deleteUser({ variables: { _id } });
-        refetch(); // 🔄 Refresca la tabla después de eliminar
-      } catch (err) {
-        console.error("Error eliminando usuario:", err);
-      }
+    console.log(`🗑 Intentando eliminar usuario con ID: ${_id}`);
+  
+    if (!confirm('⚠️ ¿Seguro que quieres eliminar este usuario?')) return;
+  
+    setDeletingUser(_id);
+  
+    try {
+      const response = await deleteUser({ variables: { _id } }); // 🔥 Usamos "_id" en vez de "id"
+      console.log("✅ Usuario eliminado correctamente:", response);
+      await refetch();
+    } catch (err) {
+      console.error("❌ Error eliminando usuario:", err);
+    } finally {
+      setDeletingUser(null);
     }
   };
+  
+  
 
-  if (loading) return <p className="text-center">Cargando usuarios...</p>;
-  if (error) return <p className="text-center text-red-500">Error al cargar usuarios.</p>;
+  if (loading) return <p className="text-center">⏳ Cargando usuarios...</p>;
+  if (error) return <p className="text-center text-red-500">❌ Error al cargar usuarios.</p>;
+  console.log("Usuarios en la tabla:", data?.allUsers);
 
   return (
     <div className="flex-grow p-6">
@@ -45,9 +56,11 @@ export const Users = () => {
                 <td className="border p-2 text-center">
                   <button 
                     onClick={() => handleDelete(user._id)}
-                    className="text-red-500 hover:text-red-700 text-lg font-bold"
+                    className={`text-red-500 hover:text-red-700 text-lg font-bold 
+                      ${deletingUser === user._id ? "opacity-50 cursor-not-allowed" : ""}`}
+                    disabled={deletingUser === user._id}
                   >
-                    ✖
+                    {deletingUser === user._id ? "⏳" : "✖"} {/* Cambia el ícono mientras se elimina */}
                   </button>
                 </td>
               </tr>

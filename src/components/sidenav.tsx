@@ -4,9 +4,8 @@ import { PRIVATE_LINK_ROUTES } from '../routers/routes';
 import { useState, useEffect } from 'react';
 import { decodeToken } from '../utils/auth';
 
-export const SideNav = () => {
+export const SideNav = ({ isCollapsed, setIsCollapsed }) => {
   const [role, setRole] = useState("");
-  const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");

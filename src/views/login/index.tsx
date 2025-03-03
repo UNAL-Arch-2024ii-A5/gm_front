@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { useUserStore } from 'stores/user-sesion'
 import { PRIVATE_LINK_ROUTES } from 'routers/routes'
 import { useMutation } from '@apollo/client'
-import { LOGIN_ADMIN, LOGIN_COACH } from '../../graphql/authMs/mutations'
+import { LOGIN_ADMIN, LOGIN_COACH, LOGIN_USER } from '../../graphql/authMs/mutations'
 
 
 type LoginForm = {
@@ -19,38 +19,33 @@ export const Login = () => {
   const { register, handleSubmit } = useForm<LoginForm>()
   const [loginAdmin, { data: adminData, loading: adminLoading, error: adminError }] = useMutation(LOGIN_ADMIN);
   const [loginCoach, { data: coachData, loading: coachLoading, error: coachError }] = useMutation(LOGIN_COACH);
+  const [loginUser, { data: userData, loading: userLoading, error: userError }] = useMutation(LOGIN_USER);
+  
+  const methodSwitch: any = {
+    admin: loginAdmin,
+    coach: loginCoach,
+    user: loginUser,
+  }
+
+  const methodSwitchName: any = {
+    admin: "loginAdmin",
+    coach: "loginCoach",
+    user: "loginUser",
+  }
 
   const onSubmit = async (formValues: LoginForm) => {
-    if (formValues.role === "admin") {
-      try {
-        const response = await loginAdmin({
-          variables: { email: formValues.email, password: formValues.password },
-        });
-  
-        const { address, email, firstname, lastname, mobile, token, _id } = response.data.loginAdmin;
-        updateUser({ address, email, firstname, lastname, mobile, token, _id });
-        sessionStorage.setItem("token", token);
-        navigate(PRIVATE_LINK_ROUTES.HOME);
-        console.log(response);
-      } catch (error) {
-        console.log("Error autenticando administrador"); // Aquí podrías mostrar un mensaje de error en la UI
-      }
-    }
-  
-    if (formValues.role === "coach") {
-      try {
-        const response = await loginCoach({
-          variables: { email: formValues.email, password: formValues.password },
-        });
-  
-        const { address, email, firstname, lastname, mobile, token, _id } = response.data.loginCoach;
-        updateUser({ address, email, firstname, lastname, mobile, token, _id });
-        sessionStorage.setItem("token", token);
-        navigate(PRIVATE_LINK_ROUTES.HOME);
-        console.log(response);
-      } catch (error) {
-        console.log("Error autenticando coach"); // Aquí podrías mostrar un mensaje de error en la UI
-      }
+    const { role } = formValues;
+    try {
+      const response = await methodSwitch[role]({
+        variables: { email: formValues.email, password: formValues.password },
+      });
+      const { address, email, firstname, lastname, mobile, token, _id } = response.data[methodSwitchName[role]];
+      updateUser({ address, email, firstname, lastname, mobile, token, _id });
+      sessionStorage.setItem("token", token);
+      navigate(PRIVATE_LINK_ROUTES.HOME);
+      console.log(response);
+    } catch (error) {
+      console.log("Error autenticando"); // Aquí podrías mostrar un mensaje de error en la UI
     }
   };
   

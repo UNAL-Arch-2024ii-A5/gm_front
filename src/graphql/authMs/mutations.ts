@@ -25,6 +25,25 @@ export const LOGIN_COACH =gql`
         token
   }
 }
-
 `;
+export const LOGIN_USER =gql`
+    mutation LoginUsuarios($email: String!, $password: String!) {
+    loginUsuarios(email: $email, password: $password) {
+        _id
+        firstname
+        lastname
+        email
+        mobile
+        token
+  }
+}
+`;
+export const FORGOT_PASSWORDT=gql`
+    mutation ForgotPasswordT($email: String!, $mobile: String!) {
+        forgotPasswordT(email: $email, mobile: $mobile) {
+            token
+        }
+}
+`;
+
 

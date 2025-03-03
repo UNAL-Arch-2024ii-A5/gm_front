@@ -1,19 +1,30 @@
 import GymLogo from 'assets/gym-logo.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-
+import { PUBLIC_ROUTES } from 'routers/routes';
+import { useMutation } from '@apollo/client';
+import { FORGOT_PASSWORDT } from '../../graphql/authMs/mutations';
 type ForgotPasswordForm = {
   email: string;
+  mobile: string;
 };
 
 export const ForgotPassword = () => {
   const { register, handleSubmit } = useForm<ForgotPasswordForm>();
-
+  const navigate = useNavigate()
+  const [forgotPasswordT, { data: adminData, loading: adminLoading, error: adminError }] = useMutation(FORGOT_PASSWORDT);
   const onSubmit = async (formValues: ForgotPasswordForm) => {
     console.log(`Solicitud de recuperación de contraseña para: ${formValues.email}`);
-    // Aquí puedes integrar la lógica para enviar el correo de recuperación
+    try{
+      const response = await forgotPasswordT({variables: {email: formValues.email, mobile: formValues.mobile}})
+      navigate(PUBLIC_ROUTES.LOGIN);
+      console.log(response);
+    }catch (error){
+      console.log("Error buscando algo");
+    }
   };
-
+  
+  
   return (
     <div className="flex h-full w-full items-center justify-center bg-gray-100">
       <div className="min-w-96 rounded-lg px-10 py-6 shadow-md">
@@ -37,6 +48,16 @@ export const ForgotPassword = () => {
               autoComplete="email"
               className="grow rounded-lg border-1 px-2 py-2"
               {...register('email', { required: true })}
+            />
+          </label>
+          <label className="flex flex-col gap-1 text-xs">
+            Telefono con el cual estás registrado
+            <input
+              type="mobile"
+              placeholder="Mobile"
+              autoComplete="mobile"
+              className="grow rounded-lg border-1 px-2 py-2"
+              {...register('mobile', { required: true })}
             />
           </label>
 

@@ -12,7 +12,8 @@ export const PRIVATE_ROUTES = {
   ROUTINES: 'rutinas',
   PROGRESS: 'progreso',
   MACHINES: 'equipo',
-  USERS:'all-users'
+  USERS:'all-users',
+  PROFILE:'profile'
 }
 
 export const PRIVATE_LINK_ROUTES = {
@@ -21,4 +22,6 @@ export const PRIVATE_LINK_ROUTES = {
   ROUTINES: '/rutinas',
   PROGRESS: '/progreso',
   MACHINES: '/equipo',
+  USERS:'/all-users',
+  PROFILE:'/profile'
 }

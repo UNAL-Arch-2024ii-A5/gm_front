@@ -21,7 +21,7 @@ export const GET_USERS= gql`
     }
   }
 `;
-export const GET_A_USER= gql`
+export const PROFILE=gql `
     query GetUser($id: ID!) {
     getUser(_id: $id) {
         _id
@@ -42,5 +42,4 @@ export const GET_A_USER= gql`
         passwordResetExpires
     }
 }
-
 `;

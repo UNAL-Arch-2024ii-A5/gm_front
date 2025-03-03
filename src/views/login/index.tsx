@@ -37,46 +37,37 @@ export const Login = () => {
   };
 
   const onSubmit = async (formValues: LoginForm) => {
-    const { role } = formValues;
-    
-    console.log("Rol seleccionado:", role);
-
     try {
-      if (!methodSwitch[role]) {
-        console.error("⚠️ Error: No existe una mutación para el rol:", role);
-        return;
-      }
-
-      console.log(`🚀 Ejecutando mutación para ${role}...`);
-
-      // Llamamos la mutación correspondiente al rol
-      const response = await methodSwitch[role]({
+      console.log(`🚀 Ejecutando mutación para ${formValues.role}...`);
+  
+      const response = await methodSwitch[formValues.role]({
         variables: { email: formValues.email, password: formValues.password },
       });
-
+  
       console.log("✅ Respuesta del servidor:", response);
-
-      const responseData = response?.data?.[methodSwitchName[role]];
-
-      if (!responseData) {
-        console.error(`❌ Error: No se recibió una respuesta válida para el rol ${role}`);
+  
+      if (!response.data || !response.data[methodSwitchName[formValues.role]]) {
+        console.error("❌ No se recibió una respuesta válida.");
         return;
       }
-
-      // Extraemos los datos del usuario
-      const { address, email, firstname, lastname, mobile, token, _id } = responseData;
-
-      // Actualizamos el estado del usuario y almacenamos el token
-      updateUser({ address, email, firstname, lastname, mobile, token, _id });
+  
+      const { _id, address, email, firstname, lastname, mobile, token } =
+        response.data[methodSwitchName[formValues.role]];
+  
       sessionStorage.setItem("token", token);
-
+      sessionStorage.setItem("userId", _id);
+      sessionStorage.setItem("role", formValues.role);
+  
+      updateUser({ _id, address, email, firstname, lastname, mobile, token });
+  
       console.log("🎉 Login exitoso. Redirigiendo a Home...");
       navigate(PRIVATE_LINK_ROUTES.HOME);
-
     } catch (error) {
       console.error("❌ Error autenticando:", error);
+      alert("Hubo un error en la autenticación.");
     }
   };
+  
 
   return (
     <div className="flex h-full w-full items-center justify-center bg-gray-100">

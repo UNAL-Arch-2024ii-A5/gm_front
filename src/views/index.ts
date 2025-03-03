@@ -8,4 +8,6 @@ export * from './progress'
 export * from './routines'
 export * from './register'
 export * from './all-users'
+export * from './profile'
+
 

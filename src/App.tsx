@@ -10,11 +10,20 @@ const App = () => {
   const { user } = useUserStore()
   const location = useLocation()
 
-  if (!user && location.pathname !== PUBLIC_ROUTES.LOGIN && location.pathname !== PUBLIC_ROUTES.REGISTER && location.pathname !== PUBLIC_ROUTES.FORGOT && location.pathname!==PUBLIC_ROUTES.FORGOTP)
+  if (
+    !user &&
+    location.pathname !== PUBLIC_ROUTES.LOGIN &&
+    location.pathname !== PUBLIC_ROUTES.REGISTER &&
+    location.pathname !== PUBLIC_ROUTES.FORGOT &&
+    location.pathname !== PUBLIC_ROUTES.FORGOTP
+  )
     return <Navigate to={PUBLIC_ROUTES.LOGIN} replace={true} />
-  
 
-  return <div className='h-full w-full'>{user ? <PrivateRouter /> : <PublicRouter />}</div>
+  return (
+    <div className="h-full w-full">
+      {user ? <PrivateRouter /> : <PublicRouter />}
+    </div>
+  )
 }
 
 export default App

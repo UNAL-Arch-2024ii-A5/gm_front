@@ -1,82 +1,88 @@
-import GymLogo from 'assets/gym-logo.png';
-import { Link, useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { useUserStore } from 'stores/user-sesion';
-import { PRIVATE_LINK_ROUTES } from 'routers/routes';
-import { useMutation } from '@apollo/client';
-import { LOGIN_ADMIN, LOGIN_COACH, LOGIN_USER } from '../../graphql/authMs/mutations';
+import GymLogo from 'assets/gym-logo.png'
+import { Link, useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { useUserStore } from 'stores/user-sesion'
+import { PRIVATE_LINK_ROUTES } from 'routers/routes'
+import { useMutation } from '@apollo/client'
+import {
+  LOGIN_ADMIN,
+  LOGIN_COACH,
+  LOGIN_USER,
+} from '../../graphql/authMs/mutations'
 
 type LoginForm = {
-  email: string;
-  password: string;
-  role: string;
-};
+  email: string
+  password: string
+  role: string
+}
 
 export const Login = () => {
-  const { updateUser } = useUserStore();
-  const navigate = useNavigate();
-  const { register, handleSubmit } = useForm<LoginForm>();
+  const { updateUser } = useUserStore()
+  const navigate = useNavigate()
+  const { register, handleSubmit } = useForm<LoginForm>()
 
   // Mutaciones de login para cada tipo de usuario
-  const [loginAdmin] = useMutation(LOGIN_ADMIN);
-  const [loginCoach] = useMutation(LOGIN_COACH);
-  const [loginUser] = useMutation(LOGIN_USER);
+  const [loginAdmin] = useMutation(LOGIN_ADMIN)
+  const [loginCoach] = useMutation(LOGIN_COACH)
+  const [loginUser] = useMutation(LOGIN_USER)
 
   // Asocia cada rol con su mutación
   const methodSwitch: any = {
     admin: loginAdmin,
     coach: loginCoach, // 🔥 Corregido (antes "Coach", ahora en minúscula)
     user: loginUser,
-  };
+  }
 
   // Asocia cada rol con el nombre de la respuesta del backend
   const methodSwitchName: any = {
-    admin: "loginAdmin",
-    coach: "loginCoach", // 🔥 Corregido para coincidir con el backend
-    user: "loginUsuarios",
-  };
+    admin: 'loginAdmin',
+    coach: 'loginCoach', // 🔥 Corregido para coincidir con el backend
+    user: 'loginUsuarios',
+  }
 
   const onSubmit = async (formValues: LoginForm) => {
-    const { role } = formValues;
-    
-    console.log("Rol seleccionado:", role);
+    const { role } = formValues
+
+    console.log('Rol seleccionado:', role)
 
     try {
       if (!methodSwitch[role]) {
-        console.error("⚠️ Error: No existe una mutación para el rol:", role);
-        return;
+        console.error('⚠️ Error: No existe una mutación para el rol:', role)
+        return
       }
 
-      console.log(`🚀 Ejecutando mutación para ${role}...`);
+      console.log(`🚀 Ejecutando mutación para ${role}...`)
 
       // Llamamos la mutación correspondiente al rol
       const response = await methodSwitch[role]({
         variables: { email: formValues.email, password: formValues.password },
-      });
+      })
 
-      console.log("✅ Respuesta del servidor:", response);
+      console.log('✅ Respuesta del servidor:', response)
 
-      const responseData = response?.data?.[methodSwitchName[role]];
+      const responseData = response?.data?.[methodSwitchName[role]]
 
       if (!responseData) {
-        console.error(`❌ Error: No se recibió una respuesta válida para el rol ${role}`);
-        return;
+        console.error(
+          `❌ Error: No se recibió una respuesta válida para el rol ${role}`,
+        )
+        return
       }
 
       // Extraemos los datos del usuario
-      const { address, email, firstname, lastname, mobile, token, _id } = responseData;
+      const { token, ...rest } = responseData
 
       // Actualizamos el estado del usuario y almacenamos el token
-      updateUser({ address, email, firstname, lastname, mobile, token, _id });
-      sessionStorage.setItem("token", token);
+      updateUser({ token, ...rest })
+      sessionStorage.setItem('user-profile', JSON.stringify(rest))
+      sessionStorage.setItem('token', token)
 
-      console.log("🎉 Login exitoso. Redirigiendo a Home...");
-      navigate(PRIVATE_LINK_ROUTES.HOME);
-
+      console.log('🎉 Login exitoso. Redirigiendo a Home...')
+      navigate(PRIVATE_LINK_ROUTES.HOME)
     } catch (error) {
-      console.error("❌ Error autenticando:", error);
+      console.error('❌ Error autenticando:', error)
     }
-  };
+  }
 
   return (
     <div className="flex h-full w-full items-center justify-center bg-gray-100">
@@ -117,10 +123,13 @@ export const Login = () => {
             >
               <option value="user">Usuario</option>
               <option value="admin">Administrador</option>
-              <option value="coach">Entrenador</option> {/* 🔥 Corregido, antes tenía "Coach" con mayúscula */}
+              <option value="coach">Entrenador</option>{' '}
+              {/* 🔥 Corregido, antes tenía "Coach" con mayúscula */}
             </select>
           </label>
-          <button className='h-6 border-1 rounded-lg mt-3 w-1/2 self-center text-sm' >Iniciar sesión</button>
+          <button className="h-6 border-1 rounded-lg mt-3 w-1/2 self-center text-sm">
+            Iniciar sesión
+          </button>
           <Link to="/forgot-password" className="text-xs text-center">
             Recuperar contraseña
           </Link>
@@ -130,5 +139,5 @@ export const Login = () => {
         </form>
       </div>
     </div>
-  );
-};
+  )
+}

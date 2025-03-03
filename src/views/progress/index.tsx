@@ -1,22 +1,13 @@
 import { useQuery } from '@apollo/client';
-import { useForm } from 'react-hook-form';
 import { GET_ALL_SNAPSHOTS_USER } from '../../graphql/progress/querys';
 
 
-// Form Types
-type MachineForm = {
-  name: string;
-  description?: string;
-  state?: string;
-  type: string;
-  lastService?: string;
-  serviceInterval?: number;
-};
-
-
 export const Progress = () => {
+
+
+
   const { data, loading, error} = useQuery(GET_ALL_SNAPSHOTS_USER, {
-    variables: { userId: 1 }, // Replace with dynamic user ID
+    variables: {} // Replace with dynamic user ID
   });
 
   const snapshots = data?.getAllSnapshotsUser

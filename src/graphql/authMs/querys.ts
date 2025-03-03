@@ -21,3 +21,26 @@ export const GET_USERS= gql`
     }
   }
 `;
+export const GET_A_USER= gql`
+    query GetUser($id: ID!) {
+    getUser(_id: $id) {
+        _id
+        firstname
+        lastname
+        email
+        mobile
+        password
+        role
+        isBlocked
+        address
+        refreshToken
+        routines
+        images
+        totalrating
+        passwordChangeAt
+        passwordResetToken
+        passwordResetExpires
+    }
+}
+
+`;

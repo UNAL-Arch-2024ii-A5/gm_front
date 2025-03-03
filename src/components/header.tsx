@@ -47,7 +47,7 @@ export const Header = () => {
           <div className="absolute right-0 mt-10 w-40 bg-white shadow-md rounded-md z-50">
             <button 
               className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/profile")}
             >
               Actualizar perfil
             </button>

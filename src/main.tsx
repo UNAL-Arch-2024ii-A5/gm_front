@@ -2,13 +2,35 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import { BrowserRouter } from 'react-router-dom'
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink, gql } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+
+// 1️⃣ Define la URL del servidor GraphQL
+const httpLink = createHttpLink({
+  uri: 'http://localhost:4000', 
+});
+
+// 2️⃣ Middleware para incluir el token en cada request
+const authLink = setContext((_, { headers }) => {
+  // Obtiene el token del almacenamiento local o donde lo guardes
+  const token = sessionStorage.getItem('token'); // O sessionStorage, cookies, etc.
+
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `${token}` : '',
+    },
+  };
+});
 
 // La url la podríamos meter en variables de ambiente para la parte cloud (?)
 const client = new ApolloClient({
-  uri: 'http://localhost:4000',
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
+
+window.__APOLLO_CLIENT__ = client;
+window.gql = gql;
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

@@ -23,4 +23,5 @@ export interface Routine {
   routineMuscles: Muscle[];
   exercises: Exercise[];
   routineExercises?: string[]; // This appears in the response but might not be needed in UI
+  customerId?: string[];
 }

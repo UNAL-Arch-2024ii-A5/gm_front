@@ -9,6 +9,8 @@ export const GET_ROUTINES = gql`
       imageUrl
       owner
       routineDifficulty
+      customerId
+      routineExercises
       routineMuscles {
         muscleID
         muscleName
@@ -37,6 +39,8 @@ export const GET_ROUTINE = gql`
       imageUrl
       owner
       routineDifficulty
+      customerId
+      routineExercises
       routineMuscles {
         muscleID
         muscleName

@@ -116,31 +116,11 @@ export const SideNav = ({ isCollapsed, setIsCollapsed }) => {
               </summary>
               {!isCollapsed && (
                 <div className="pl-8 flex flex-col gap-1 mt-1">
-                  <Link
-                    to="/rutinas"
-                    className="text-gray-600 hover:text-pink-500 transition"
-                  >
-                    - Todas las rutinas
-                  </Link>
-                  <Link
-                    to="/admin/create-machines"
-                    className="text-gray-600 hover:text-pink-500 transition"
-                  >
-                    - Crear rutinas
-                  </Link>
-                  <Link
-                    to="/admin/assign-routines"
-                    className="text-gray-600 hover:text-pink-500 transition"
-                  >
-                    - Asignar rutinas
-                  </Link>
-                  <Link
-                    to="/admin/assign-routines"
-                    className="text-gray-600 hover:text-pink-500 transition"
-                  >
-                    - Eliminar rutinas
-                  </Link>
-                </div>
+                <Link to="/manejo-rutinas" className="text-gray-600 hover:text-pink-500 transition">
+                  - Todas las rutinas
+                </Link>
+              </div>
+
               )}
             </details>
           </div>

@@ -66,5 +66,24 @@ export const FORGOT_PASSWORD =gql`
         }
 }
 `;
-
+export const REGISTER =gql`
+    mutation RegisterUser($firstname: String!, $lastname: String!, $email: String!, $mobile: String!, $password: String!, $address: String!) {
+    registerUser(firstname: $firstname, lastname: $lastname, email: $email, mobile: $mobile, password: $password, address: $address) {
+        firstname
+        lastname
+        email
+        mobile
+        password
+        role
+        isBlocked
+        address
+        routines
+        images
+        totalrating
+        _id
+        createdAt
+        updatedAt
+  }
+}
+`;
 

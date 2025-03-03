@@ -87,8 +87,8 @@ export const REGISTER =gql`
 }
 `;
 export const DELETE_USER = gql `
-    mutation DeleteUser($id: ID!) {
-    deleteUser(_id: $id) {
+    mutation DeleteUser($_id: ID!) {
+    deleteUser(_id: $_id) { 
       _id
       firstname
       lastname

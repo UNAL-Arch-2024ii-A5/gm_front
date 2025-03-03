@@ -9,19 +9,24 @@ export const Users = () => {
   const [deletingUser, setDeletingUser] = useState<string | null>(null);
 
   const handleDelete = async (_id: string) => {
+    console.log(`🗑 Intentando eliminar usuario con ID: ${_id}`);
+  
     if (!confirm('⚠️ ¿Seguro que quieres eliminar este usuario?')) return;
-
-    setDeletingUser(_id); // Muestra visualmente que se está eliminando
-
+  
+    setDeletingUser(_id);
+  
     try {
-      await deleteUser({ variables: { _id } });
-      await refetch(); // 🔄 Recarga la lista de usuarios después de eliminar
+      const response = await deleteUser({ variables: { _id } }); // 🔥 Usamos "_id" en vez de "id"
+      console.log("✅ Usuario eliminado correctamente:", response);
+      await refetch();
     } catch (err) {
       console.error("❌ Error eliminando usuario:", err);
     } finally {
-      setDeletingUser(null); // Oculta el estado de eliminación
+      setDeletingUser(null);
     }
   };
+  
+  
 
   if (loading) return <p className="text-center">⏳ Cargando usuarios...</p>;
   if (error) return <p className="text-center text-red-500">❌ Error al cargar usuarios.</p>;

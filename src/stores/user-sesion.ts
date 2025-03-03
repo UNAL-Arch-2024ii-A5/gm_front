@@ -12,16 +12,18 @@ export type user = {
   lastname?: string
   email?: string
   mobile?: string
+  password?: string
   role?: string
   isBlocked?: boolean
   address?: string
-  refreshToken?: string
+  token?: string // Diana plz valida qué tipo tiene el session token para almacenarlo acá de una vez. 
   routines?: [string]
   images?: [string]
   ratings?: [Rating]
   totalrating?: string
+  passwordChangeAt?: string
   passwordResetToken?: string
-  sesionToken?: string // Diana plz valida qué tipo tiene el session token para almacenarlo acá de una vez. 
+  passwordResetExpires?: string 
 }
 
 type State = {

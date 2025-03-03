@@ -1,7 +1,6 @@
 import { useQuery, gql, useMutation } from '@apollo/client'
 import { Images } from 'assets/index'
 import { useEffect, useMemo } from 'react'
-import { useForm } from 'react-hook-form'
 
 export const GET_ALL_MACHINE_AVAILABILITY = gql`
   query {
@@ -80,17 +79,11 @@ export const GET_ALL_MACHINE_AVAILABILITY = gql`
   }
 `
 
-const machineTypes = [
-  'banco',
-  'bicicleta',
-  'caminadora',
-  'cardio',
-  'elíptica',
-  'multiuso',
-  'pesas',
-  'remo',
-]
-
+const USE_CAMINADORA = gql`
+  mutation UpdateUseMachine($updateUseMachineId: ID!) {
+    updateUseMachine(id: $updateUseMachineId)
+  }
+`
 const buildItem = (data: any) => {
   const items = []
   for (const machineType in data) {
@@ -114,6 +107,10 @@ export const AvailableMachines = () => {
   const { data, loading, error, refetch } = useQuery(
     GET_ALL_MACHINE_AVAILABILITY,
   )
+  const [
+    useCaminadora,
+    { data: mutationEvent, loading: loadingMutation, error: errorMutation },
+  ] = useMutation(USE_CAMINADORA)
 
   const parsedMachines = useMemo(() => (data ? buildItem(data) : []), [data])
 
@@ -147,7 +144,12 @@ export const AvailableMachines = () => {
         ))}
       </div>
       <div className="flex justify-center py-20">
-        <button className="rounded-xl p-3 border-1 border-fuchsia-600 hover:bg-fuchsia-300">
+        <button
+          className="rounded-xl p-3 border-1 border-fuchsia-600 hover:bg-fuchsia-300"
+          onClick={() =>
+            useCaminadora({ variables: { updateUseMachineId: '1' } })
+          }
+        >
           Usar caminadora 1
         </button>
       </div>

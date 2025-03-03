@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom"
 import { PRIVATE_ROUTES } from "./routes"
-import { Home, Machines, Monitoring, Progress, Routines } from "../views"
+import { Home, Machines, Monitoring, Progress, Routines, Users } from "../views"
 
 import ExerciseGuide from "../views/exercises/index"
 
@@ -12,6 +12,7 @@ export const PrivateRouter = () => {
         <Route path={PRIVATE_ROUTES.MONITORING} element={<Monitoring />} />
         <Route path={PRIVATE_ROUTES.PROGRESS} element={<Progress />} />
         <Route path={PRIVATE_ROUTES.ROUTINES} element={<Routines />} />
+        <Route path={PRIVATE_ROUTES.USERS} element={<Users />} />
         <Route path="/exercise-guide/:routineId" element={<ExerciseGuide />} />
       </Route>
     </Routes>

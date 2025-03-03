@@ -12,7 +12,7 @@ type ForgotPasswordForm = {
 export const ForgotPassword = () => {
   const { register, handleSubmit } = useForm<ForgotPasswordForm>();
   const navigate = useNavigate()
-  const [forgotPasswordT, { data: adminData, loading: adminLoading, error: adminError }] = useMutation(FORGOT_PASSWORDT);
+  const [forgotPasswordT, { data: data, loading: loading, error: error }] = useMutation(FORGOT_PASSWORDT);
   const onSubmit = async (formValues: ForgotPasswordForm) => {
     console.log(`Solicitud de recuperación de contraseña para: ${formValues.email}`);
     try{

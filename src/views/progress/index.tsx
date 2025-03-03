@@ -1,9 +1,13 @@
-import { useQuery, gql, useMutation } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { GET_ALL_SNAPSHOTS_USER } from '../../graphql/progress/querys';
 
+
 export const Progress = () => {
+
+
+
   const { data, loading, error} = useQuery(GET_ALL_SNAPSHOTS_USER, {
-    variables: { userId: 1 }, // Replace with dynamic user ID
+    variables: {} // Replace with dynamic user ID
   });
 
   const snapshots = data?.getAllSnapshotsUser

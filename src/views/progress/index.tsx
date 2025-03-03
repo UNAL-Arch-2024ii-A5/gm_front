@@ -1,52 +1,7 @@
-import { useQuery, gql, useMutation } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useForm } from 'react-hook-form';
+import { GET_ALL_SNAPSHOTS_USER } from '../../graphql/progress/querys';
 
-// Queries
-const GET_ALL_SNAPSHOTS_USER = gql`
-  query GetAllSnapshotsUser($userId: ID!) {
-    getAllSnapshotsUser(userId: $userId) {
-      id
-      userId
-      weight
-      height
-      bodyFatPercentage
-      neck
-      waist
-      hip
-      chest
-      leftArm
-      rightArm
-      leftForearm
-      rightForearm
-      leftThigh
-      rightThigh
-      leftCalf
-      rightCalf
-      date
-    }
-  }
-`;
-
-// Mutations
-const CREATE_MACHINE = gql`
-  mutation Mutation($name: String!, $description: String, $state: String, $type: String, $serviceInterval: Int) {
-    createMachineMS(name: $name, description: $description, state: $state, type: $type, serviceInterval: $serviceInterval) {
-      name
-      state
-      type
-      lastService
-      serviceInterval
-    }
-  }
-`;
-const DELETE_MACHINE = gql`
-  mutation DeleteMachine($id: ID!) {
-    deleteMachine(id: $id) {
-      message
-      statusCode
-    }
-  }
-`;
 
 // Form Types
 type MachineForm = {

@@ -1,4 +1,4 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql } from '@apollo/client';
 
 export const CREATE_MACHINE = gql`
   mutation Mutation($name: String!, $description: String, $state: String, $type: String, $serviceInterval: Int) {

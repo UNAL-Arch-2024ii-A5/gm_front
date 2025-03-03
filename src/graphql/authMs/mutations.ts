@@ -107,6 +107,29 @@ export const DELETE_USER = gql `
       passwordResetExpires
     }
   }
-
 `;
+export const UPDATE_USER= gql `
+    mutation UpdateUser($email: String!, $password: String!, $firstname: String, $lastname: String, $mobile: String, $address: String) {
+    updateUser(email: $email, password: $password, firstname: $firstname, lastname: $lastname, mobile: $mobile, address: $address) {
+        _id
+        firstname
+        lastname
+        email
+        mobile
+        password
+        role
+        isBlocked
+        address
+        routines
+        images
+        totalrating
+        createdAt
+        updatedAt
+        refreshToken
+        passwordResetExpires
+        passwordResetToken
+  }
+}
+`;
+
 

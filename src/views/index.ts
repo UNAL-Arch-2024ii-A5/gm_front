@@ -9,5 +9,4 @@ export * from './routines'
 export * from './register'
 export * from './all-users'
 export * from './profile'
-
-
+export * from './availlable-machines'

@@ -57,7 +57,7 @@ export const SideNav = ({ isCollapsed, setIsCollapsed }) => {
           {!isCollapsed && 'Mi Progreso'}
         </Link>
         <Link
-          to={PRIVATE_LINK_ROUTES.MONITORING}
+          to={PRIVATE_LINK_ROUTES.AVAILABLE_MANCHINES}
           className="flex items-center gap-2 text-gray-700"
         >
           <span className="material-symbols-outlined">browse_activity</span>

@@ -64,7 +64,6 @@ export const SideNav = ({ isCollapsed, setIsCollapsed }) => {
               {!isCollapsed && (
                 <div className="pl-8 flex flex-col gap-1 mt-1">
                   <Link to="/all-users" className="text-gray-600 hover:text-pink-500 transition">- Todos los usuarios</Link>
-                  <Link to="/admin/delete-users" className="text-gray-600 hover:text-pink-500 transition">- Eliminar usuarios</Link>
                 </div>
               )}
             </details>

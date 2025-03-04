@@ -97,7 +97,7 @@ export const SideNav = ({ isCollapsed, setIsCollapsed }) => {
               {!isCollapsed && (
                 <div className="pl-8 flex flex-col gap-1 mt-1">
                   <Link
-                    to="/all-users"
+                    to="/app/all-users"
                     className="text-gray-600 hover:text-pink-500 transition"
                   >
                     - Todos los usuarios
@@ -116,11 +116,13 @@ export const SideNav = ({ isCollapsed, setIsCollapsed }) => {
               </summary>
               {!isCollapsed && (
                 <div className="pl-8 flex flex-col gap-1 mt-1">
-                <Link to="/manejo-rutinas" className="text-gray-600 hover:text-pink-500 transition">
-                  - Todas las rutinas
-                </Link>
-              </div>
-
+                  <Link
+                    to="/manejo-rutinas"
+                    className="text-gray-600 hover:text-pink-500 transition"
+                  >
+                    - Todas las rutinas
+                  </Link>
+                </div>
               )}
             </details>
           </div>

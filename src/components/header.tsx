@@ -11,8 +11,9 @@ export const Header = () => {
   useEffect(() => {}, [])
 
   const handleLogout = () => {
-    sessionStorage.removeItem('token') // Elimina el token
-    navigate('/login') // Redirige al login
+    sessionStorage.removeItem('token')
+    sessionStorage.removeItem('user-profile') // Elimina el token
+    navigate('/app/login') // Redirige al login
   }
 
   return (
